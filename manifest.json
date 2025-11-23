@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "InterviewMate - LeetCode Question Extractor",
+  "version": "1.0.0",
+  "description": "Extracts LeetCode questions and sends them to the InterviewMate app",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": ["https://leetcode.com/*", "http://localhost:8080/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/*"],
+      "js": ["content-script.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "InterviewMate Extractor"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["content-script.js"],
+      "matches": ["https://leetcode.com/*"]
+    }
+  ]
+}

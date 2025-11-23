@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InterviewMate Extractor</title>
+  <style>
+    body {
+      width: 350px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .status {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .status.connecting {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .status.connected {
+      background: rgba(76, 175, 80, 0.8);
+    }
+
+    .status.disconnected {
+      background: rgba(244, 67, 54, 0.8);
+    }
+
+    .status.error {
+      background: rgba(255, 152, 0, 0.8);
+    }
+
+    .button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .extract-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .extract-btn:hover {
+      background: #45a049;
+    }
+
+    .extract-btn:disabled {
+      background: #cccccc;
+    }
+
+    .check-btn {
+      background: #2196F3;
+      color: white;
+    }
+
+    .check-btn:hover {
+      background: #1976D2;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .message.success {
+      background: rgba(76, 175, 80, 0.3);
+      border: 1px solid #4CAF50;
+      color: #4CAF50;
+    }
+
+    .message.error {
+      background: rgba(244, 67, 54, 0.3);
+      border: 1px solid #f44336;
+      color: #f44336;
+    }
+
+    .info {
+      margin-top: 15px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🚀 InterviewMate</div>
+    <div class="subtitle">LeetCode Question Extractor</div>
+  </div>
+
+  <div class="status connecting" id="status">
+    <div id="statusText">
+      <span class="spinner"></span>
+      Checking server connection...
+    </div>
+  </div>
+
+  <button class="button extract-btn" id="extractBtn" disabled>
+    📤 Extract Question
+  </button>
+
+  <button class="button check-btn" id="checkBtn">
+    🔄 Check Connection
+  </button>
+
+  <div class="message" id="message"></div>
+
+  <div class="info">
+    <strong>How it works:</strong><br>
+    1. Navigate to a LeetCode problem<br>
+    2. Click "Extract Question"<br>
+    3. Question is sent to InterviewMate app<br><br>
+    <strong>Server:</strong> localhost:8080
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
