@@ -32,13 +32,9 @@ interview-extension/
 ├── manifest.json          # Extension manifest
 ├── background.js          # Service worker for server communication
 ├── content-script.js      # LeetCode data extraction logic
-├── popup.html            # Extension popup UI
-├── popup.js              # Popup interaction logic
-├── icons/                # Extension icons
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-└── README.md            # This file
+├── popup.html             # Extension popup UI
+├── popup.js               # Popup interaction logic
+└── README.md              # This file
 ```
 
 ## How It Works
