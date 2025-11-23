@@ -4,9 +4,17 @@
 // Server configuration
 const SERVER_URL = 'http://localhost:8080';
 
+// Debug: Background script loaded
+console.log('🚀 InterviewMate Background Script Loaded');
+console.log('🔍 Extension ID:', chrome.runtime.id);
+
 // Listen for messages from content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('Background received message:', request);
+  console.log('📨 Background received message:', {
+    action: request.action,
+    sender: sender.tab ? sender.tab.url : 'popup',
+    timestamp: new Date().toISOString()
+  });
 
   if (request.action === 'extractQuestion') {
     // Send extracted data to the server
@@ -35,7 +43,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === 'test') {
+    // Debug test message
+    console.log('✅ Background test message received successfully');
+    sendResponse({
+      success: true,
+      message: 'Background script is working!',
+      timestamp: new Date().toISOString(),
+      extensionId: chrome.runtime.id
+    });
+    return true;
+  }
+
   // Default response for unknown actions
+  console.log('⚠️ Unknown action received:', request.action);
   sendResponse({ success: false, error: 'Unknown action' });
 });
 

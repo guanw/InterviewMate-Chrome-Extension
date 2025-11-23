@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let serverConnected = false;
   let currentTab = null;
 
+  // Debug: Extension loaded
+  console.log('🚀 InterviewMate Extension Popup Loaded');
+  console.log('🔍 Extension ID:', chrome.runtime.id);
+
+  // Add test buttons for debugging
+  addDebugControls();
+
   // Initialize popup
   initializePopup();
 
@@ -156,4 +163,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Check server connection when popup opens
   setTimeout(checkServerConnection, 500);
+});
+
+// Debug functions for troubleshooting
+function addDebugControls() {
+  // Add test buttons to popup
+  const debugSection = document.createElement('div');
+  debugSection.style.cssText = 'margin-top: 10px; padding: 10px; border: 1px dashed #ccc; font-size: 12px;';
+  debugSection.innerHTML = `
+    <div><strong>🧪 Debug Controls</strong></div>
+    <button id="test-bg" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test Background</button>
+    <button id="test-content" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test Content</button>
+    <button id="test-server" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test Server</button>
+    <button id="test-all" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test All</button>
+    <div id="debug-output" style="margin-top: 5px; max-height: 100px; overflow-y: auto; background: #f5f5f5; padding: 5px; font-family: monospace; font-size: 10px;"></div>
+  `;
+
+  document.body.appendChild(debugSection);
+
+  // Add event listeners
+  document.getElementById('test-bg').addEventListener('click', testBackgroundCommunication);
+  document.getElementById('test-content').addEventListener('click', testContentScriptCommunication);
+  document.getElementById('test-server').addEventListener('click', testServerConnection);
+  document.getElementById('test-all').addEventListener('click', runAllTests);
+}
+
+async function testBackgroundCommunication() {
+  logDebug('🧪 Testing background script communication...');
+
+  try {
+    const response = await sendMessageToBackground({action: 'checkServer'});
+    logDebug('✅ Background script response:', response);
+  } catch (error) {
+    logDebug('❌ Background script error:', error.message);
+  }
+}
+
+async function testContentScriptCommunication() {
+  logDebug('🧪 Testing content script communication...');
+
+  try {
+    const tab = await getCurrentTab();
+    if (!tab.url.includes('leetcode.com')) {
+      logDebug('⚠️ Not on LeetCode page, skipping content script test');
+      return;
+    }
+
+    const response = await sendMessageToTab(tab.id, {action: 'extract'});
+    logDebug('✅ Content script response:', response);
+  } catch (error) {
+    logDebug('❌ Content script error:', error.message);
+  }
+}
+
+async function testServerConnection() {
+  logDebug('🧪 Testing server connection...');
+
+  try {
+    const response = await fetch('http://localhost:8080/api/health');
+    const data = await response.json();
+    logDebug('✅ Server response:', data);
+  } catch (error) {
+    logDebug('❌ Server connection error:', error.message);
+  }
+}
+
+async function runAllTests() {
+  logDebug('🧪 Running all tests...');
+  await testBackgroundCommunication();
+  await testContentScriptCommunication();
+  await testServerConnection();
+  logDebug('🏁 All tests completed');
+}
+
+function logDebug(message, data = null) {
+  console.log(message, data);
+  const outputDiv = document.getElementById('debug-output');
+  if (outputDiv) {
+    const timestamp = new Date().toLocaleTimeString();
+    const logMessage = data ? `${message} ${JSON.stringify(data)}` : message;
+    outputDiv.innerHTML += `<div>[${timestamp}] ${logMessage}</div>`;
+    outputDiv.scrollTop = outputDiv.scrollHeight;
+  }
+}
+
+// Global error handler
+window.addEventListener('error', (e) => {
+  console.error('❌ Popup Error:', e.error);
+  logDebug('❌ Global error:', e.error.message);
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('❌ Popup Promise Rejection:', e.reason);
+  logDebug('❌ Promise rejection:', e.reason);
 });
