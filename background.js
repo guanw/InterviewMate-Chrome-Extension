@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Function to send extracted data to the server
 async function sendExtractedData(data) {
   try {
-    const response = await fetch(`${SERVER_URL}/api/leetcode-data`, {
+    const response = await fetch(`${SERVER_URL}/api/interview-question-data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

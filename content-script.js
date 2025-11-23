@@ -1,14 +1,14 @@
 // Content script for InterviewMate Chrome Extension
-// Extracts LeetCode question data from the current page
+// Extracts Interview question data from the current page
 
 console.log('InterviewMate content script loaded on:', window.location.href);
 
-// Function to extract LeetCode question data
-function extractLeetCodeData() {
+// Function to extract Interview question data
+function extractInterviewData() {
   try {
     // Wait for the page to be fully loaded
     if (document.readyState !== 'complete') {
-      setTimeout(extractLeetCodeData, 1000);
+      setTimeout(extractInterviewData, 1000);
       return;
     }
 
@@ -25,10 +25,10 @@ function extractLeetCodeData() {
     // Extract code information
     extractCodeInfo(data);
 
-    console.log('Extracted LeetCode data:', data);
+    console.log('Extracted Interview data:', data);
     return data;
   } catch (error) {
-    console.error('Error extracting LeetCode data:', error);
+    console.error('Error extracting Interview data:', error);
     return null;
   }
 }
@@ -72,7 +72,7 @@ function extractProblemInfo(data) {
 
 // Function to extract code information
 function extractCodeInfo(data) {
-  // Try different code editors that LeetCode might use
+  // Try different code editors that Interview might use
 
   // Monaco Editor (most common)
   const monacoEditor = document.querySelector('.monaco-editor') ||
@@ -153,7 +153,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Content script received message:', request);
 
   if (request.action === 'extract') {
-    const data = extractLeetCodeData();
+    const data = extractInterviewData();
     if (data) {
       // Send data to background script for server communication
       chrome.runtime.sendMessage({
@@ -169,23 +169,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
   }
 
-  if (request.action === 'checkLeetCode') {
-    const isLeetCode = window.location.hostname.includes('leetcode');
-    sendResponse({ isLeetCode });
+  if (request.action === 'checkInterview') {
+    const isInterview = window.location.hostname.includes('Interview');
+    sendResponse({ isInterview });
   }
 });
 
 // Auto-extract when page loads (optional - could be triggered by user instead)
-if (window.location.hostname.includes('leetcode.com')) {
-  console.log('LeetCode page detected, ready for extraction');
+if (window.location.hostname.includes('Interview.com')) {
+  console.log('Interview page detected, ready for extraction');
 
   // Optional: Auto-extract after a delay to ensure page is loaded
   setTimeout(() => {
-    const data = extractLeetCodeData();
+    const data = extractInterviewData();
     if (data) {
-      console.log('Auto-extracted LeetCode data:', data);
+      console.log('Auto-extracted Interview data:', data);
       // Optionally send to server immediately
       // chrome.runtime.sendMessage({ action: 'extractQuestion', data });
     }
   }, 3000);
 }
+

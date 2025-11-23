@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Get current tab
       currentTab = await getCurrentTab();
 
-      // Check if we're on LeetCode
+      // Check if we're on Interview
       if (currentTab && currentTab.url.includes('leetcode.com')) {
         // Check server connection
         await checkServerConnection();
       } else {
-        updateStatus('error', 'Please navigate to a LeetCode problem page');
+        updateStatus('error', 'Please navigate to a Interview problem page');
         extractBtn.disabled = true;
       }
 
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function extractQuestion() {
     if (!currentTab || !currentTab.url.includes('leetcode.com')) {
-      showMessage('Please navigate to a LeetCode problem page', 'error');
+      showMessage('Please navigate to a Interview problem page', 'error');
       return;
     }
 

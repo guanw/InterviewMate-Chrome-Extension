@@ -1,10 +1,10 @@
 # InterviewMate Chrome Extension
 
-A Chrome extension that extracts LeetCode questions and sends them to the InterviewMate desktop app.
+A Chrome extension that extracts Interview questions and sends them to the InterviewMate desktop app.
 
 ## Features
 
-- 🔍 **Smart Detection**: Automatically detects LeetCode problem pages
+- 🔍 **Smart Detection**: Automatically detects Interview problem pages
 - 📤 **Question Extraction**: Extracts problem details, difficulty, tags, and code
 - 🌐 **Server Communication**: Sends data to the InterviewMate app via localhost:8080
 - 💬 **Real-time Status**: Shows connection status and extraction results
@@ -19,7 +19,7 @@ A Chrome extension that extracts LeetCode questions and sends them to the Interv
 
 ## Usage
 
-1. **Navigate** to any LeetCode problem page
+1. **Navigate** to any Interview problem page
 2. **Click** the InterviewMate extension icon in your toolbar
 3. **Check** the server connection status
 4. **Click** "Extract Question" to send the problem to the InterviewMate app
@@ -31,7 +31,7 @@ A Chrome extension that extracts LeetCode questions and sends them to the Interv
 interview-extension/
 ├── manifest.json          # Extension manifest
 ├── background.js          # Service worker for server communication
-├── content-script.js      # LeetCode data extraction logic
+├── content-script.js      # Interview data extraction logic
 ├── popup.html             # Extension popup UI
 ├── popup.js               # Popup interaction logic
 └── README.md              # This file
@@ -41,7 +41,7 @@ interview-extension/
 
 ### 1. Content Script
 
-- Runs on LeetCode pages
+- Runs on Interview pages
 - Extracts problem information using DOM selectors
 - Supports multiple code editor types (Monaco, CodeMirror, textarea)
 - Detects programming language from code content
@@ -56,11 +56,11 @@ interview-extension/
 
 - Shows server connection status
 - Provides extract button and status messages
-- Validates that user is on a LeetCode page
+- Validates that user is on a Interview page
 
 ## Data Extraction
 
-The extension extracts the following information from LeetCode pages:
+The extension extracts the following information from Interview pages:
 
 ### Problem Information
 
@@ -71,7 +71,7 @@ The extension extracts the following information from LeetCode pages:
 
 ### Code Information
 
-- **Monaco Editor**: Code from LeetCode's Monaco editor
+- **Monaco Editor**: Code from Interview's Monaco editor
 - **CodeMirror Editor**: Code from CodeMirror editor
 - **Textarea**: Code from simple text areas
 - **Code Snippets**: Code from pre/code elements
@@ -80,7 +80,7 @@ The extension extracts the following information from LeetCode pages:
 
 The extension communicates with the InterviewMate app via:
 
-- **Endpoint**: `http://localhost:8080/api/leetcode-data`
+- **Endpoint**: `http://localhost:8080/api/interview-question-data`
 - **Method**: POST
 - **Format**: JSON with timestamp, extension ID, and extracted data
 
@@ -95,12 +95,12 @@ The extension communicates with the InterviewMate app via:
 
 1. Install the extension in Chrome (Developer mode)
 2. Start the InterviewMate app
-3. Navigate to a LeetCode problem
+3. Navigate to a Interview problem
 4. Use the extension popup to extract and send data
 
 ### Debugging
 
-1. Open Chrome DevTools on the LeetCode page
+1. Open Chrome DevTools on the Interview page
 2. Check the Console for content script logs
 3. Open `chrome://extensions/` and click "background page" for background script logs
 
