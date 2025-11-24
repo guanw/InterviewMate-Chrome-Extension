@@ -121,25 +121,35 @@
     .info {
       margin-top: 15px;
       padding: 10px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
       border-radius: 4px;
       font-size: 11px;
       line-height: 1.4;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .spinner {
       display: inline-block;
       width: 12px;
       height: 12px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(0, 0, 0, 0.3);
       border-radius: 50%;
-      border-top-color: white;
+      border-top-color: #333;
       animation: spin 1s ease-in-out infinite;
       margin-right: 8px;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    /* Ensure proper contrast for all status indicators */
+    .status {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .status.connecting {
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
   </style>
 </head>

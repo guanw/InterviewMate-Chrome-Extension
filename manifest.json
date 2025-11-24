@@ -4,11 +4,11 @@
   "version": "1.0.0",
   "description": "Extracts Interview questions and sends them to the InterviewMate app",
   "permissions": ["activeTab", "storage", "scripting"],
-  "host_permissions": ["https://Interview.com/*", "http://localhost:8080/*"],
+  "host_permissions": ["https://leetcode.com/*", "http://localhost:8080/*"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": ["https://Interview.com/*"],
+      "matches": ["https://leetcode.com/*"],
       "js": ["content-script.js"],
       "run_at": "document_end"
     }
@@ -20,7 +20,7 @@
   "web_accessible_resources": [
     {
       "resources": ["content-script.js"],
-      "matches": ["https://Interview.com/*"]
+      "matches": ["https://leetcode.com/*"]
     }
   ]
 }
