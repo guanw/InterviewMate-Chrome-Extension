@@ -7,12 +7,17 @@
   "host_permissions": [
     "https://leetcode.com/*",
     "http://localhost:8080/*",
-    "https://www.hackerrank.com/*"
+    "https://www.hackerrank.com/*",
+    "https://app.coderpad.io/*"
   ],
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": ["https://leetcode.com/*", "https://www.hackerrank.com/*"],
+      "matches": [
+        "https://leetcode.com/*",
+        "https://www.hackerrank.com/*",
+        "https://app.coderpad.io/*"
+      ],
       "js": ["content-script.js"],
       "run_at": "document_end"
     }
@@ -24,7 +29,11 @@
   "web_accessible_resources": [
     {
       "resources": ["content-script.js"],
-      "matches": ["https://leetcode.com/*", "https://www.hackerrank.com/*"]
+      "matches": [
+        "https://leetcode.com/*",
+        "https://www.hackerrank.com/*",
+        "https://app.coderpad.io/*"
+      ]
     }
   ]
 }

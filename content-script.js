@@ -155,7 +155,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === 'checkInterview') {
-    const isInterview = window.location.hostname.includes('leetcode') || window.location.hostname.includes('hackerrank');
+    const isInterview = window.location.hostname.includes('leetcode') || window.location.hostname.includes('hackerrank') || window.location.hostname.includes('coderpad');
     console.log('📋 Interview check:', { isInterview, url: window.location.href });
     sendResponse({ isInterview });
   }
