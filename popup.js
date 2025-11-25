@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentTab = await getCurrentTab();
 
       // Check if we're on Interview
-      if (currentTab && currentTab.url.includes('leetcode.com')) {
+      if (currentTab && (currentTab.url.includes('leetcode.com') || currentTab.url.includes('hackerrank.com'))) {
         // Check server connection
         await checkServerConnection();
       } else {
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function extractQuestion() {
-    if (!currentTab || !currentTab.url.includes('leetcode.com')) {
+    if (!currentTab || (!currentTab.url.includes('leetcode.com') && !currentTab.url.includes('hackerrank.com'))) {
       showMessage('Please navigate to a Interview problem page', 'error');
       return;
     }
@@ -209,7 +209,7 @@ async function testContentScriptCommunication() {
     const tab = await getCurrentTab();
     logDebug('📋 Current tab:', { url: tab.url, title: tab.title });
 
-    if (!tab.url.includes('leetcode.com')) {
+    if (!tab.url.includes('leetcode.com') || !tab.url.includes('hackerrank.com')) {
       logDebug('⚠️ Not on Interview page, skipping content script test');
       logDebug('💡 Please navigate to an Interview problem page to test content script');
       return;

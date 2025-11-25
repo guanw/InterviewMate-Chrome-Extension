@@ -72,7 +72,7 @@ function extractProblemInfo(data) {
 
 // Function to extract code information
 function extractCodeInfo(data) {
-  // Try different code editors that LeetCode might use
+  // Try different code editors that interview website might use
 
   // Monaco Editor (most common)
   const monacoEditor = document.querySelector('.monaco-editor') ||
@@ -85,7 +85,7 @@ function extractCodeInfo(data) {
       if (textarea) {
         data.code.monaco = {
           content: textarea.value || textarea.textContent || '',
-          language: 'javascript' // Default, could be detected
+          language: 'python' // Default, could be detected
         };
       }
     } catch (error) {
@@ -102,7 +102,7 @@ function extractCodeInfo(data) {
       if (codeMirrorInstance) {
         data.code.codemirror = {
           content: codeMirrorInstance.getValue(),
-          language: codeMirrorInstance.getOption('mode') || 'javascript'
+          language: codeMirrorInstance.getOption('mode') || 'python'
         };
       }
     } catch (error) {
@@ -171,7 +171,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === 'checkInterview') {
-    const isInterview = window.location.hostname.includes('leetcode');
+    const isInterview = window.location.hostname.includes('leetcode') || window.location.hostname.includes('hackerrank');
     console.log('📋 Interview check:', { isInterview, url: window.location.href });
     sendResponse({ isInterview });
   }
@@ -186,24 +186,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       url: window.location.href,
       title: document.title,
       hostname: window.location.hostname,
-      isLeetCode: window.location.hostname.includes('leetcode')
     });
     return true;
   }
 });
-
-// Auto-extract when page loads (optional - could be triggered by user instead)
-if (window.location.hostname.includes('leetcode.com')) {
-  console.log('🔍 Interview page detected, ready for extraction');
-
-  // Optional: Auto-extract after a delay to ensure page is loaded
-  setTimeout(() => {
-    const data = extractInterviewData();
-    if (data) {
-      console.log('🗃️ Auto-extracted Interview data:', data);
-      // Optionally send to server immediately
-      // chrome.runtime.sendMessage({ action: 'extractQuestion', data });
-    }
-  }, 3000);
-}
-

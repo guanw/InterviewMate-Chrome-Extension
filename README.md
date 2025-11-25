@@ -106,7 +106,7 @@ The extension communicates with the InterviewMate app via:
 
 ## Security
 
-- Only runs on `leetcode.com` domains
+- runs on `leetcode.com`, `hackerrank.com` domains
 - Only communicates with `localhost:8080`
 - No external network requests
 - No data storage or tracking
