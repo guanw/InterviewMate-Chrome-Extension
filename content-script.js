@@ -84,8 +84,7 @@ function extractCodeInfo(data) {
                       monacoEditor.querySelector('[contenteditable="true"]');
       if (textarea) {
         data.code.monaco = {
-          content: textarea.value || textarea.textContent || '',
-          language: 'python' // Default, could be detected
+          content: textarea.value || textarea.textContent || ''
         };
       }
     } catch (error) {
@@ -101,8 +100,7 @@ function extractCodeInfo(data) {
       const codeMirrorInstance = codeMirrorEditor.CodeMirror;
       if (codeMirrorInstance) {
         data.code.codemirror = {
-          content: codeMirrorInstance.getValue(),
-          language: codeMirrorInstance.getOption('mode') || 'python'
+          content: codeMirrorInstance.getValue()
         };
       }
     } catch (error) {
@@ -115,8 +113,7 @@ function extractCodeInfo(data) {
   for (const textarea of textareas) {
     if (textarea.value && textarea.value.trim().length > 0) {
       data.code.textarea = {
-        content: textarea.value,
-        language: 'text'
+        content: textarea.value
       };
       break;
     }
@@ -127,26 +124,13 @@ function extractCodeInfo(data) {
   for (const element of codeElements) {
     if (element.textContent && element.textContent.trim().length > 10) {
       data.code.snippet = {
-        content: element.textContent.trim(),
-        language: detectLanguage(element)
+        content: element.textContent.trim()
       };
       break;
     }
   }
 }
 
-// Helper function to detect programming language from code content
-function detectLanguage(element) {
-  const content = element.textContent.toLowerCase();
-
-  if (content.includes('def ') || content.includes('import ')) return 'python';
-  if (content.includes('function ') || content.includes('const ') || content.includes('let ')) return 'javascript';
-  if (content.includes('#include') || content.includes('int main')) return 'cpp';
-  if (content.includes('public class') || content.includes('System.out.println')) return 'java';
-  if (content.includes('package ') || content.includes('func ')) return 'go';
-
-  return 'text';
-}
 
 // Listen for messages from the popup or background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
