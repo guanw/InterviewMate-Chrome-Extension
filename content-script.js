@@ -3,6 +3,16 @@
 
 console.log('🚀 InterviewMate Content Script Loaded on:', window.location.href);
 
+async function getFullCode() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({
+      action: 'executeInPage'
+    }, (response) => {
+      resolve(response || "");
+    });
+  });
+}
+
 // Function to extract Interview question data
 async function extractInterviewData() {
   try {
@@ -112,43 +122,12 @@ async function extractCodeInfo(data) {
   // Try different code editors that interview website might use
 
   // Monaco Editor (most common)
-  let monacoContent = '';
-
-  // Method 1: Extract from Monaco editor DOM
-  const monacoEditor = document.querySelector('.monaco-editor') ||
-                      document.querySelector('[class*="monaco"]');
-  if (monacoEditor) {
-    try {
-      // Monaco stores line content in .view-line divs within .view-lines container
-      const viewLines = monacoEditor.querySelector('.view-lines');
-      if (viewLines) {
-        // Each .view-line represents one line of code
-        // Use direct children to avoid getting nested duplicates
-        const lines = Array.from(viewLines.children).filter(child =>
-          child.classList.contains('view-line') ||
-          child.className.includes('view-line')
-        );
-
-        if (lines.length > 0) {
-          monacoContent = lines.map(line => {
-            // For each line, get the text from the innermost text nodes
-            // Monaco wraps tokens in spans, we need to get just the text
-            const lineContent = line.innerText || line.textContent;
-            return lineContent;
-          }).join('\n');
-
-          console.log('✅ Extracted code from Monaco editor via DOM');
-        }
-      }
-    } catch (error) {
-      console.warn('Could not extract Monaco editor code via DOM:', error);
-    }
-  }
-
+  const monacoContent = await getFullCode();
   if (monacoContent) {
     data.code.monaco = {
       content: monacoContent
     };
+    console.log('✅ Extracted code from Monaco editor via model');
   }
 
   // CodeMirror Editor (alternative)

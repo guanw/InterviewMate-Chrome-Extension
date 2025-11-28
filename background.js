@@ -43,6 +43,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === 'executeInPage') {
+    // Execute code in the page's main world
+    chrome.scripting.executeScript({
+      target: { tabId: sender.tab.id },
+      world: "MAIN",
+      function: () => {
+        if (window.monaco) {
+          const m = window.monaco.editor.getModels();
+          if (m && m.length) return m[0].getValue();
+        }
+        if (window.editor?.getValue) return window.editor.getValue();
+        if (window.padEditor?.getValue) return window.padEditor.getValue();
+        return null;
+      }
+    }, (results) => {
+      if (chrome.runtime.lastError) {
+        console.error('Script execution error:', chrome.runtime.lastError);
+        sendResponse(null);
+      } else {
+        sendResponse(results[0].result);
+      }
+    });
+    return true;
+  }
+
   if (request.action === 'test') {
     // Debug test message
     console.log('✅ Background test message received successfully');
