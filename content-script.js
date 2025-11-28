@@ -86,28 +86,13 @@ function extractProblemInfo(data) {
       data.problem.title = titleElement.textContent.trim();
     }
 
-    // Extract difficulty
-    const difficultyElement = document.querySelector('[data-e2e-locator="difficulty"]') ||
-                             document.querySelector('.text-difficulty') ||
-                             document.querySelector('[class*="difficulty"]');
-
-    if (difficultyElement) {
-      data.problem.difficulty = difficultyElement.textContent.trim();
-    }
-
-    // Extract tags
-    const tagElements = document.querySelectorAll('[data-e2e-locator="tag"], .text-tags a, [class*="tag"]');
-    if (tagElements.length > 0) {
-      data.problem.tags = Array.from(tagElements).map(tag => tag.textContent.trim()).filter(Boolean);
-    }
-
     // Extract problem description
     const descriptionElement = document.querySelector('[data-e2e-locator="problem-description"]') ||
                              document.querySelector('.question-description') ||
                              document.querySelector('[class*="description"]');
 
     if (descriptionElement) {
-      data.problem.description = descriptionElement.textContent.trim(); // Limit length
+      data.problem.description = descriptionElement.textContent.trim();
     }
   }
 

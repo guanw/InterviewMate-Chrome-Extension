@@ -5,7 +5,7 @@ A Chrome extension that extracts Interview questions and sends them to the Inter
 ## Features
 
 - 🔍 **Smart Detection**: Automatically detects Interview problem pages on LeetCode, HackerRank, and CoderPad
-- 📤 **Question Extraction**: Extracts problem details, difficulty, tags, and code
+- 📤 **Question Extraction**: Extracts problem details and code
 - 🌐 **Server Communication**: Sends data to the InterviewMate app via localhost:8080
 - 💬 **Real-time Status**: Shows connection status and extraction results
 - 🎯 **User-Friendly UI**: Clean, intuitive popup interface
@@ -65,8 +65,6 @@ The extension extracts the following information from Interview pages:
 ### Problem Information
 
 - **Title**: Problem name
-- **Difficulty**: Easy/Medium/Hard
-- **Tags**: Problem categories and topics
 - **Description**: Problem statement (first 2000 chars)
 
 ### Code Information
