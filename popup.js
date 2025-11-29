@@ -170,15 +170,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function addDebugControls() {
   // Add test buttons to popup
   const debugSection = document.createElement('div');
-  debugSection.style.cssText = 'margin-top: 10px; padding: 10px; border: 1px dashed #ccc; font-size: 12px; background: rgba(0, 0, 0, 0.1); border-radius: 4px;';
+  debugSection.className = 'debug-section';
   debugSection.innerHTML = `
     <div><strong>🧪 Debug Controls</strong></div>
-    <button id="test-bg" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test Background</button>
-    <button id="test-content" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test Content</button>
-    <button id="test-server" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test Server</button>
-    <button id="test-all" style="margin: 2px; padding: 4px 8px; font-size: 11px;">Test All</button>
-    <button id="clear-log" style="margin: 2px; padding: 4px 8px; font-size: 11px; background: #6c757d; color: white;">Clear Log</button>
-    <div id="debug-output" style="margin-top: 5px; max-height: 100px; overflow-y: auto; background: #f5f5f5; padding: 5px; font-family: monospace; font-size: 10px; color: #333; border: 1px solid #ccc;"></div>
+    <button id="test-bg" class="debug-btn">Test Background</button>
+    <button id="test-content" class="debug-btn">Test Content</button>
+    <button id="test-server" class="debug-btn">Test Server</button>
+    <button id="test-all" class="debug-btn">Test All</button>
+    <button id="clear-log" class="debug-btn clear-log">Clear Log</button>
+    <div id="debug-output" class="debug-output"></div>
   `;
 
   document.body.appendChild(debugSection);

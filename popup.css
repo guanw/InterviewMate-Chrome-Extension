@@ -1,0 +1,33 @@
+/* Inline styles moved from popup.js */
+
+.debug-section {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.debug-btn {
+  margin: 2px;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.debug-btn.clear-log {
+  background: #6c757d;
+  color: white;
+}
+
+.debug-output {
+  margin-top: 5px;
+  max-height: 100px;
+  overflow-y: auto;
+  background: #f5f5f5;
+  padding: 5px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #333;
+  border: 1px solid #ccc;
+}
