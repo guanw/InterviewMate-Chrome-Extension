@@ -1,7 +1,11 @@
 // Background script for InterviewMate Chrome Extension
 // Handles communication between content script and server
 
-// Server configuration
+// Constants (shared with other extension scripts via constants.js)
+const ACTION_EXECUTE_IN_PAGE = 'executeInPage';
+const ACTION_EXTRACT_QUESTION = 'extractQuestion';
+const ACTION_CHECK_SERVER = 'checkServer';
+const ACTION_TEST = 'test';
 const SERVER_URL = 'http://localhost:8080';
 
 // Debug: Background script loaded
@@ -16,7 +20,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     timestamp: new Date().toISOString()
   });
 
-  if (request.action === 'extractQuestion') {
+  if (request.action === ACTION_EXTRACT_QUESTION) {
     // Send extracted data to the server
     sendExtractedData(request.data)
       .then(response => {
@@ -30,7 +34,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true; // Keep the message channel open for async response
   }
 
-  if (request.action === 'checkServer') {
+  if (request.action === ACTION_CHECK_SERVER) {
     // Check if server is reachable
     checkServerConnection()
       .then(isConnected => {
@@ -43,7 +47,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  if (request.action === 'executeInPage') {
+  if (request.action === ACTION_EXECUTE_IN_PAGE) {
     // Execute code in the page's main world
     chrome.scripting.executeScript({
       target: { tabId: sender.tab.id },
@@ -68,7 +72,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  if (request.action === 'test') {
+  if (request.action === ACTION_TEST) {
     // Debug test message
     console.log('✅ Background test message received successfully');
     sendResponse({

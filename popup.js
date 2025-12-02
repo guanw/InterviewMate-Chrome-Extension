@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentTab = await getCurrentTab();
 
       // Check if we're on Interview
-      if (currentTab && (currentTab.url.includes('leetcode.com') || currentTab.url.includes('hackerrank.com') || currentTab.url.includes('coderpad.io'))) {
+      if (currentTab && window.ExtensionConstants.INTERVIEW_PLATFORMS.some(platform => currentTab.url.includes(platform))) {
         // Check server connection
         await checkServerConnection();
       } else {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStatus('connecting', 'Checking server connection...');
 
     try {
-      const response = await sendMessageToBackground({ action: 'checkServer' });
+      const response = await sendMessageToBackground({ action: window.ExtensionConstants.ACTION_CHECK_SERVER });
 
       if (response && response.connected) {
         serverConnected = true;
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function extractQuestion() {
-    if (!currentTab || (!currentTab.url.includes('leetcode.com') && !currentTab.url.includes('hackerrank.com') && !currentTab.url.includes('coderpad.io'))) {
+    if (!currentTab || !window.ExtensionConstants.INTERVIEW_PLATFORMS.some(platform => currentTab.url.includes(platform))) {
       showMessage('Please navigate to a Interview problem page', 'error');
       return;
     }
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       extractBtn.textContent = '⏳ Extracting...';
 
       // Send extract message to content script
-      const response = await sendMessageToTab(currentTab.id, { action: 'extract' });
+      const response = await sendMessageToTab(currentTab.id, { action: window.ExtensionConstants.ACTION_EXTRACT });
 
       if (response && response.success) {
         showMessage('✅ Question extracted and sent to InterviewMate app!', 'success');
@@ -195,7 +195,7 @@ async function testBackgroundCommunication() {
   logDebug('🧪 Testing background script communication...');
 
   try {
-    const response = await sendMessageToBackground({action: 'checkServer'});
+    const response = await sendMessageToBackground({action: window.ExtensionConstants.ACTION_CHECK_SERVER});
     logDebug('✅ Background script response:', response);
   } catch (error) {
     logDebug('❌ Background script error:', error.message);
@@ -209,7 +209,7 @@ async function testContentScriptCommunication() {
     const tab = await getCurrentTab();
     logDebug('📋 Current tab:', { url: tab.url, title: tab.title });
 
-    if (!tab.url.includes('leetcode.com') && !tab.url.includes('hackerrank.com') && !tab.url.includes('coderpad.io')) {
+    if (!window.ExtensionConstants.INTERVIEW_PLATFORMS.some(platform => tab.url.includes(platform))) {
       logDebug('⚠️ Not on Interview page, skipping content script test');
       logDebug('💡 Please navigate to an Interview problem page to test content script');
       return;
@@ -219,12 +219,12 @@ async function testContentScriptCommunication() {
 
     // First test basic connection with a simple test message
     try {
-      const testResponse = await sendMessageToTab(tab.id, {action: 'test'});
+      const testResponse = await sendMessageToTab(tab.id, {action: window.ExtensionConstants.ACTION_TEST});
       logDebug('✅ Content script test response:', testResponse);
 
       if (testResponse && testResponse.success) {
         logDebug('🧪 Testing data extraction...');
-        const extractResponse = await sendMessageToTab(tab.id, {action: 'extract'});
+        const extractResponse = await sendMessageToTab(tab.id, {action: window.ExtensionConstants.ACTION_EXTRACT});
         logDebug('✅ Content script extract response:', extractResponse);
       }
     } catch (messageError) {

@@ -6,7 +6,7 @@ console.log('🚀 InterviewMate Content Script Loaded on:', window.location.href
 async function getFullCode() {
   return new Promise((resolve) => {
     chrome.runtime.sendMessage({
-      action: 'executeInPage'
+      action: window.ExtensionConstants.ACTION_EXECUTE_IN_PAGE
     }, (response) => {
       resolve(response || "");
     });
@@ -159,13 +159,13 @@ async function extractCodeInfo(data) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Content script received message:', request);
 
-  if (request.action === 'extract') {
+  if (request.action === window.ExtensionConstants.ACTION_EXTRACT) {
     console.log('📤 Extracting data from page...');
     extractInterviewData().then(data => {
       if (data) {
         // Send data to background script for server communication
         chrome.runtime.sendMessage({
-          action: 'extractQuestion',
+          action: window.ExtensionConstants.ACTION_EXTRACT_QUESTION,
           data
         }, (response) => {
           console.log('✅ Background script response:', response);
@@ -181,13 +181,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true; // Keep message channel open for async response
   }
 
-  if (request.action === 'checkInterview') {
-    const isInterview = window.location.hostname.includes('leetcode') || window.location.hostname.includes('hackerrank') || window.location.hostname.includes('coderpad');
+  if (request.action === window.ExtensionConstants.ACTION_CHECK_INTERVIEW) {
+    const isInterview = window.ExtensionConstants.INTERVIEW_PLATFORMS.some(platform =>
+      window.location.hostname.includes(platform.replace('.com', '').replace('app.', ''))
+    );
     console.log('📋 Interview check:', { isInterview, url: window.location.href });
     sendResponse({ isInterview });
   }
 
-  if (request.action === 'test') {
+  if (request.action === window.ExtensionConstants.ACTION_TEST) {
     // Debug test message
     console.log('✅ Content script test message received successfully');
     sendResponse({

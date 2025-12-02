@@ -18,7 +18,7 @@
         "https://www.hackerrank.com/*",
         "https://app.coderpad.io/*"
       ],
-      "js": ["content-script.js"],
+      "js": ["constants.js", "content-script.js"],
       "run_at": "document_end"
     }
   ],
