@@ -13,7 +13,7 @@ const ACTION_TEST = 'test';
 const SERVER_URL = 'http://localhost:8080';
 
 // Interview platforms
-const INTERVIEW_PLATFORMS = ['leetcode.com', 'hackerrank.com', 'coderpad.io'];
+const INTERVIEW_PLATFORMS = ['leetcode.com', 'hackerrank.com', 'coderpad.io', 'codility.com'];
 
 // Global scope (for content script and popup)
 window.ExtensionConstants = {
