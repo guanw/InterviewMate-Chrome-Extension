@@ -74,6 +74,25 @@ function extractProblemInfo(data) {
     if (firstParagraph && !data.problem.title) {
       data.problem.description = firstParagraph.textContent.trim();
     }
+  } else if (window.location.hostname.includes('codility.com')) {
+    // Handle Codility-specific extraction
+    const taskTitleElement = document.querySelector('.task-title') ||
+                            document.querySelector('h1') ||
+                            document.querySelector('[class*="title"]');
+
+    if (taskTitleElement) {
+      data.problem.title = taskTitleElement.textContent.trim();
+    }
+
+    // Extract problem description from Codility's task description
+    const taskDescriptionElement = document.querySelector('.task-description') ||
+                                  document.querySelector('.markdown') ||
+                                  document.querySelector('[class*="description"]');
+
+    if (taskDescriptionElement) {
+      data.problem.description = taskDescriptionElement.textContent.trim();
+      data.problem.fullContent = taskDescriptionElement.textContent.trim();
+    }
   } else {
     // Fallback to original extraction logic for other platforms
     // Extract problem title
@@ -106,13 +125,38 @@ function extractProblemInfo(data) {
 async function extractCodeInfo(data) {
   // Try different code editors that interview website might use
 
-  // Monaco Editor (most common)
+  // Monaco Editor (most common) - used by Codility and others
   const monacoContent = await getFullCode();
   if (monacoContent) {
     data.code.monaco = {
       content: monacoContent
     };
     console.log('✅ Extracted code from Monaco editor via model');
+  }
+
+  // Codility-specific code extraction (if Monaco didn't work)
+  if (window.location.hostname.includes('codility.com') && !monacoContent) {
+    try {
+      // Try to find Codility's specific code editor elements
+      const codilityEditor = document.querySelector('.ace_editor') ||
+                            document.querySelector('.editor-container');
+
+      if (codilityEditor) {
+        // Try to get the editor instance from Codility's global scope
+        if (window.editor && window.editor.getValue) {
+          const codeContent = window.editor.getValue();
+          if (codeContent) {
+            data.code.codility = {
+              content: codeContent,
+              editorType: 'codility'
+            };
+            console.log('✅ Extracted code from Codility editor');
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Could not extract Codility editor code:', error);
+    }
   }
 
   // CodeMirror Editor (alternative)
@@ -157,7 +201,9 @@ async function extractCodeInfo(data) {
 
 // Listen for messages from the popup or background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('Content script received message:', request);
+  console.log('📩 Content script received message:', request);
+  console.log('📍 Current URL:', window.location.href);
+  console.log('📍 Hostname:', window.location.hostname);
 
   if (request.action === window.ExtensionConstants.ACTION_EXTRACT) {
     console.log('📤 Extracting data from page...');
@@ -175,7 +221,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: false, error: 'Could not extract data from this page' });
       }
     }).catch(error => {
-      console.error('Error extracting data:', error);
+      console.error('❌ Error extracting data:', error);
       sendResponse({ success: false, error: error.message });
     });
     return true; // Keep message channel open for async response
@@ -192,6 +238,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === window.ExtensionConstants.ACTION_TEST) {
     // Debug test message
     console.log('✅ Content script test message received successfully');
+    console.log('📍 Content script is active on:', window.location.href);
     sendResponse({
       success: true,
       message: 'Content script is working!',
@@ -199,7 +246,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       url: window.location.href,
       title: document.title,
       hostname: window.location.hostname,
+      isCodility: window.location.hostname.includes('codility.com'),
+      platformDetected: window.ExtensionConstants.INTERVIEW_PLATFORMS.some(platform =>
+        window.location.hostname.includes(platform.replace('.com', '').replace('app.', ''))
+      )
     });
     return true;
   }
 });
+
+// Send a heartbeat message to indicate content script is loaded
+console.log('🚀 InterviewMate Content Script Loaded on:', window.location.href);
+console.log('📋 Supported platforms:', window.ExtensionConstants.INTERVIEW_PLATFORMS);
+console.log('📍 Current hostname:', window.location.hostname);
+console.log('📍 Is Codility?', window.location.hostname.includes('codility.com'));
+
+// Check if we're on a supported platform
+const isSupportedPlatform = window.ExtensionConstants.INTERVIEW_PLATFORMS.some(platform =>
+  window.location.hostname.includes(platform.replace('.com', '').replace('app.', ''))
+);
+console.log('📋 Is supported platform?', isSupportedPlatform);
+
+if (isSupportedPlatform) {
+  console.log('✅ Content script ready for extraction');
+} else {
+  console.log('⚠️ Not on a supported platform, content script will not extract data');
+}

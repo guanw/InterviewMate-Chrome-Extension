@@ -8,7 +8,8 @@
     "https://leetcode.com/*",
     "http://localhost:8080/*",
     "https://www.hackerrank.com/*",
-    "https://app.coderpad.io/*"
+    "https://app.coderpad.io/*",
+    "https://app.codility.com/*"
   ],
   "background": { "service_worker": "background.js" },
   "content_scripts": [
@@ -16,7 +17,8 @@
       "matches": [
         "https://leetcode.com/*",
         "https://www.hackerrank.com/*",
-        "https://app.coderpad.io/*"
+        "https://app.coderpad.io/*",
+        "https://app.codility.com/*"
       ],
       "js": ["constants.js", "content-script.js"],
       "run_at": "document_end"
@@ -32,7 +34,8 @@
       "matches": [
         "https://leetcode.com/*",
         "https://www.hackerrank.com/*",
-        "https://app.coderpad.io/*"
+        "https://app.coderpad.io/*",
+        "https://app.codility.com/*"
       ]
     }
   ]
