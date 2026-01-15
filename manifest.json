@@ -3,8 +3,9 @@
   "name": "InterviewMate - Interview Question Extractor",
   "version": "1.0.0",
   "description": "Extracts Interview questions and sends them to the InterviewMate app",
-  "permissions": ["activeTab", "storage", "scripting"],
+  "permissions": ["activeTab", "storage", "scripting", "tabs"],
   "host_permissions": [
+    "<all_urls>",
     "https://leetcode.com/*",
     "https://www.leetcode.com/*",
     "https://hackerrank.com/*",
