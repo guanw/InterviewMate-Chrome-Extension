@@ -2,10 +2,7 @@
 // Handles communication between content script and server
 
 // Constants (shared with other extension scripts via constants.js)
-const ACTION_EXECUTE_IN_PAGE = "executeInPage";
 const ACTION_REQUEST_OCR_CAPTURE = "requestOcrCapture";
-const ACTION_EXTRACT_OCR = "extractOCR";
-const ACTION_EXTRACT_QUESTION = "extractQuestion";
 const ACTION_CHECK_SERVER = "checkServer";
 const ACTION_TEST = "test";
 const SERVER_URL = "http://localhost:8080";
@@ -86,34 +83,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  if (request.action === ACTION_EXECUTE_IN_PAGE) {
-    // Execute code in the page's main world
-    chrome.scripting.executeScript(
-      {
-        target: { tabId: sender.tab.id },
-        world: "MAIN",
-        function: () => {
-          if (window.monaco) {
-            const m = window.monaco.editor.getModels();
-            if (m && m.length) return m[0].getValue();
-          }
-          if (window.editor?.getValue) return window.editor.getValue();
-          if (window.padEditor?.getValue) return window.padEditor.getValue();
-          return null;
-        },
-      },
-      (results) => {
-        if (chrome.runtime.lastError) {
-          console.error("Script execution error:", chrome.runtime.lastError);
-          sendResponse(null);
-        } else {
-          sendResponse(results[0].result);
-        }
-      },
-    );
-    return true;
-  }
-
   if (request.action === ACTION_TEST) {
     // Debug test message
     console.log("✅ Background test message received successfully");
@@ -184,32 +153,6 @@ async function sendOCRData(data) {
     return await response.json();
   } catch (error) {
     console.error("Failed to send OCR data to server:", error);
-    throw error;
-  }
-}
-
-// Function to send extracted data to the server
-async function sendExtractedData(data) {
-  try {
-    const response = await fetch(`${SERVER_URL}/api/interview-question-data`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        timestamp: new Date().toISOString(),
-        extensionId: chrome.runtime.id,
-        data,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server responded with status: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Failed to send data to server:", error);
     throw error;
   }
 }
