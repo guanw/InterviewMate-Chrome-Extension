@@ -1,4 +1,4 @@
-// Background script for InterviewMate Chrome Extension
+// Background script for CodingMate Chrome Extension
 // Handles communication between content script and server
 
 // Constants (shared with other extension scripts via constants.js)
@@ -10,7 +10,7 @@ const ACTION_TEST = "test";
 const SERVER_URL = "http://localhost:8080";
 
 // Debug: Background script loaded
-console.log("🚀 InterviewMate Background Script Loaded");
+console.log("🚀 CodingMate Background Script Loaded");
 console.log("🔍 Extension ID:", chrome.runtime.id);
 
 // Listen for messages from content scripts
@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log("OCR capture and send completed:", response);
         sendResponse({
           success: true,
-          message: "OCR data sent to InterviewMate app",
+          message: "OCR data sent to CodingMate app",
         });
       })
       .catch((error) => {
@@ -45,7 +45,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log("OCR data sent to server:", response);
         sendResponse({
           success: true,
-          message: "OCR data sent to InterviewMate app",
+          message: "OCR data sent to CodingMate app",
         });
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log("Data sent to server:", response);
         sendResponse({
           success: true,
-          message: "Question sent to InterviewMate app",
+          message: "Question sent to CodingMate app",
         });
       })
       .catch((error) => {
@@ -174,4 +174,4 @@ async function checkServerConnection() {
 }
 
 // Initialize background script
-console.log("InterviewMate background script loaded");
+console.log("CodingMate background script loaded");

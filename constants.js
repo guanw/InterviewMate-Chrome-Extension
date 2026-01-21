@@ -4,7 +4,7 @@
 // Message actions
 const ACTION_EXTRACT = "extract";
 const ACTION_REQUEST_OCR_CAPTURE = "requestOcrCapture";
-const ACTION_CHECK_INTERVIEW = "checkInterview";
+const ACTION_CHECK_CODING = "checkCoding";
 const ACTION_CHECK_SERVER = "checkServer";
 const ACTION_TEST = "test";
 
@@ -25,7 +25,7 @@ const SUPPORTED_PLATFORMS = [
 window.ExtensionConstants = {
   ACTION_EXTRACT,
   ACTION_REQUEST_OCR_CAPTURE,
-  ACTION_CHECK_INTERVIEW,
+  ACTION_CHECK_CODING,
   ACTION_CHECK_SERVER,
   ACTION_TEST,
   SERVER_URL,

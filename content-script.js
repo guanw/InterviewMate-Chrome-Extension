@@ -1,15 +1,15 @@
-// Content script for InterviewMate Chrome Extension
-// Extracts Interview question data from the current page
+// Content script for CodingMate Chrome Extension
+// Extracts Coding question data from the current page
 
-console.log("🚀 InterviewMate Content Script Loaded on:", window.location.href);
+console.log("🚀 CodingMate Content Script Loaded on:", window.location.href);
 
 // Function to request OCR extraction from background script
-async function extractInterviewData() {
+async function extractCodingData() {
   try {
     // Wait for the page to be fully loaded
     if (document.readyState !== "complete") {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      return extractInterviewData();
+      return extractCodingData();
     }
 
     // Prepare metadata for OCR request
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.action === window.ExtensionConstants.ACTION_EXTRACT) {
     console.log("📤 Requesting OCR extraction...");
-    extractInterviewData()
+    extractCodingData()
       .then((data) => {
         if (data) {
           // Request OCR capture from background script
@@ -65,18 +65,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true; // Keep message channel open for async response
   }
 
-  if (request.action === window.ExtensionConstants.ACTION_CHECK_INTERVIEW) {
+  if (request.action === window.ExtensionConstants.ACTION_CHECK_CODING) {
     const isSupported = window.ExtensionConstants.SUPPORTED_PLATFORMS.some(
       (platform) =>
         window.location.hostname.includes(
           platform.replace(".com", "").replace("app.", ""),
         ),
     );
-    console.log("📋 Interview check:", {
-      isInterview,
+    console.log("📋 Coding check:", {
+      isCoding,
       url: window.location.href,
     });
-    sendResponse({ isInterview });
+    sendResponse({ isCoding });
   }
 
   if (request.action === window.ExtensionConstants.ACTION_TEST) {
@@ -103,7 +103,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // Send a heartbeat message to indicate content script is loaded
-console.log("🚀 InterviewMate Content Script Loaded on:", window.location.href);
+console.log("🚀 CodingMate Content Script Loaded on:", window.location.href);
 console.log(
   "📋 Supported platforms:",
   window.ExtensionConstants.SUPPORTED_PLATFORMS,

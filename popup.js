@@ -1,4 +1,4 @@
-// Popup script for InterviewMate Chrome Extension
+// Popup script for CodingMate Chrome Extension
 // Handles UI interactions and communication with background script
 
 // Helper functions (global scope)
