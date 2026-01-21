@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentTab = null;
 
   // Debug: Extension loaded
-  console.log("🚀 InterviewMate Extension Popup Loaded");
+  console.log("🚀 Code Productivity Suite Extension Loaded");
   console.log("🔍 Extension ID:", chrome.runtime.id);
 
   // Add test buttons for debugging
@@ -56,17 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Get current tab
       currentTab = await getCurrentTab();
 
-      // Check if we're on Interview
+      // Check if we can analyze code on this page
       if (
         currentTab &&
-        window.ExtensionConstants.INTERVIEW_PLATFORMS.some((platform) =>
-          currentTab.url.includes(platform),
-        )
+        currentTab.url &&
+        !currentTab.url.startsWith("chrome://")
       ) {
         // Check server connection
         await checkServerConnection();
       } else {
-        updateStatus("error", "Please navigate to a Interview problem page");
+        updateStatus("error", "Please navigate to a webpage to analyze code");
         extractBtn.disabled = true;
       }
 
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupEventListeners() {
-    extractBtn.addEventListener("click", extractQuestion);
+    extractBtn.addEventListener("click", extractWen);
     checkBtn.addEventListener("click", checkServerConnection);
   }
 
@@ -93,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response && response.connected) {
         serverConnected = true;
-        updateStatus("connected", "✅ Connected to InterviewMate app");
+        updateStatus("connected", "✅ Connected to code analysis service");
         extractBtn.disabled = false;
         hideMessage();
       } else {
@@ -101,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateStatus("disconnected", "❌ Cannot connect to server");
         extractBtn.disabled = true;
         showMessage(
-          "Make sure the InterviewMate app is running on localhost:8080",
+          "Make sure the code analysis service is running on localhost:8080",
           "error",
         );
       }
@@ -114,14 +113,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function extractQuestion() {
+  async function extractWen() {
     if (
       !currentTab ||
-      !window.ExtensionConstants.INTERVIEW_PLATFORMS.some((platform) =>
-        currentTab.url.includes(platform),
-      )
+      !currentTab.url ||
+      currentTab.url.startsWith("chrome://")
     ) {
-      showMessage("Please navigate to a Interview problem page", "error");
+      showMessage("Please navigate to a webpage to analyze code", "error");
       return;
     }
 
@@ -143,18 +141,15 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (response && response.success) {
-        showMessage(
-          "✅ Question extracted and sent to InterviewMate app!",
-          "success",
-        );
-        updateStatus("connected", "✅ Question sent successfully");
+        showMessage("✅ Code analyzed and sent to local service!", "success");
+        updateStatus("connected", "✅ Sent successfully");
       } else {
         const errorMsg = response ? response.error : "Unknown error occurred";
         showMessage(`❌ Extraction failed: ${errorMsg}`, "error");
         updateStatus("error", "⚠️ Extraction failed");
       }
     } catch (error) {
-      console.error("Error extracting question:", error);
+      console.error("Error extracting:", error);
       if (
         error.message &&
         error.message.includes("Receiving end does not exist")
@@ -169,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateStatus("error", "⚠️ Extraction error");
     } finally {
       extractBtn.disabled = false;
-      extractBtn.textContent = "📤 Extract Question";
+      extractBtn.textContent = "📤 Extract";
     }
   }
 
@@ -248,15 +243,9 @@ async function testContentScriptCommunication() {
     const tab = await getCurrentTab();
     logDebug("📋 Current tab:", { url: tab.url, title: tab.title });
 
-    if (
-      !window.ExtensionConstants.INTERVIEW_PLATFORMS.some((platform) =>
-        tab.url.includes(platform),
-      )
-    ) {
-      logDebug("⚠️ Not on Interview page, skipping content script test");
-      logDebug(
-        "💡 Please navigate to an Interview problem page to test content script",
-      );
+    if (!tab.url || tab.url.startsWith("chrome://")) {
+      logDebug("⚠️ Not on webpage, skipping content script test");
+      logDebug("💡 Please navigate to a webpage to test content script");
       return;
     }
 
@@ -281,7 +270,7 @@ async function testContentScriptCommunication() {
 
       if (messageError.message.includes("Receiving end does not exist")) {
         logDebug("💡 Content script is not loaded on this page");
-        logDebug("💡 Make sure you are on an Interview problem page");
+        logDebug("💡 Make sure you are on a webpage with code content");
         logDebug("💡 Try refreshing the page and test again");
       }
     }

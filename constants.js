@@ -11,12 +11,14 @@ const ACTION_TEST = "test";
 // Server configuration
 const SERVER_URL = "http://localhost:8080";
 
-// Interview platforms
-const INTERVIEW_PLATFORMS = [
+// Supported platforms for code analysis
+const SUPPORTED_PLATFORMS = [
   "leetcode.com",
   "hackerrank.com",
   "coderpad.io",
   "codility.com",
+  "github.com",
+  "stackoverflow.com",
 ];
 
 // Global scope (for content script and popup)
@@ -27,5 +29,5 @@ window.ExtensionConstants = {
   ACTION_CHECK_SERVER,
   ACTION_TEST,
   SERVER_URL,
-  INTERVIEW_PLATFORMS,
+  SUPPORTED_PLATFORMS,
 };

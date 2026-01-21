@@ -3,6 +3,8 @@
 
 // Constants (shared with other extension scripts via constants.js)
 const ACTION_REQUEST_OCR_CAPTURE = "requestOcrCapture";
+const ACTION_EXTRACT_QUESTION = 'extractQuestion';
+const ACTION_EXTRACT_OCR = 'extractOcr';
 const ACTION_CHECK_SERVER = "checkServer";
 const ACTION_TEST = "test";
 const SERVER_URL = "http://localhost:8080";

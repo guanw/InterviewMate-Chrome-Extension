@@ -66,7 +66,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === window.ExtensionConstants.ACTION_CHECK_INTERVIEW) {
-    const isInterview = window.ExtensionConstants.INTERVIEW_PLATFORMS.some(
+    const isSupported = window.ExtensionConstants.SUPPORTED_PLATFORMS.some(
       (platform) =>
         window.location.hostname.includes(
           platform.replace(".com", "").replace("app.", ""),
@@ -91,7 +91,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       title: document.title,
       hostname: window.location.hostname,
       isCodility: window.location.hostname.includes("codility.com"),
-      platformDetected: window.ExtensionConstants.INTERVIEW_PLATFORMS.some(
+      platformDetected: window.ExtensionConstants.SUPPORTED_PLATFORMS.some(
         (platform) =>
           window.location.hostname.includes(
             platform.replace(".com", "").replace("app.", ""),
@@ -106,7 +106,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 console.log("🚀 InterviewMate Content Script Loaded on:", window.location.href);
 console.log(
   "📋 Supported platforms:",
-  window.ExtensionConstants.INTERVIEW_PLATFORMS,
+  window.ExtensionConstants.SUPPORTED_PLATFORMS,
 );
 console.log("📍 Current hostname:", window.location.hostname);
 console.log(
@@ -115,7 +115,7 @@ console.log(
 );
 
 // Check if we're on a supported platform
-const isSupportedPlatform = window.ExtensionConstants.INTERVIEW_PLATFORMS.some(
+const isSupportedPlatform = window.ExtensionConstants.SUPPORTED_PLATFORMS.some(
   (platform) =>
     window.location.hostname.includes(
       platform.replace(".com", "").replace("app.", ""),

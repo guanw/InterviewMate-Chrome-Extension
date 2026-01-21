@@ -1,55 +1,26 @@
 {
   "manifest_version": 3,
-  "name": "InterviewMate - Interview Question Extractor",
+  "name": "Code Productivity Suite",
   "version": "1.0.0",
-  "description": "Extracts Interview questions and sends them to the InterviewMate app",
+  "description": "Enhances coding experience with productivity features and code analysis tools",
   "permissions": ["activeTab", "storage", "scripting", "tabs"],
-  "host_permissions": [
-    "<all_urls>",
-    "https://leetcode.com/*",
-    "https://www.leetcode.com/*",
-    "https://hackerrank.com/*",
-    "https://www.hackerrank.com/*",
-    "https://coderpad.io/*",
-    "https://app.coderpad.io/*",
-    "https://codility.com/*",
-    "https://app.codility.com/*",
-    "http://localhost:8080/*"
-  ],
+  "host_permissions": ["http://localhost:8080/*"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": [
-        "https://leetcode.com/*",
-        "https://www.leetcode.com/*",
-        "https://hackerrank.com/*",
-        "https://www.hackerrank.com/*",
-        "https://coderpad.io/*",
-        "https://app.coderpad.io/*",
-        "https://codility.com/*",
-        "https://app.codility.com/*"
-      ],
+      "matches": ["https://*/*", "http://*/*"],
       "js": ["constants.js", "content-script.js"],
       "run_at": "document_idle"
     }
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "InterviewMate Extractor"
+    "default_title": "Productivity Booster"
   },
   "web_accessible_resources": [
     {
       "resources": ["content-script.js"],
-      "matches": [
-        "https://leetcode.com/*",
-        "https://www.leetcode.com/*",
-        "https://hackerrank.com/*",
-        "https://www.hackerrank.com/*",
-        "https://coderpad.io/*",
-        "https://app.coderpad.io/*",
-        "https://codility.com/*",
-        "https://app.codility.com/*"
-      ]
+      "matches": ["https://*/*", "http://*/*"]
     }
   ]
 }
