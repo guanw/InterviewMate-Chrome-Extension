@@ -3,7 +3,13 @@
   "name": "Code Productivity Suite",
   "version": "1.0.0",
   "description": "Enhances coding experience with productivity features and code analysis tools",
-  "permissions": ["activeTab", "storage", "scripting", "tabs"],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "clipboardRead",
+    "clipboardWrite"
+  ],
   "host_permissions": ["http://localhost:8080/*"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [
