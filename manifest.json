@@ -3,13 +3,16 @@
   "name": "Code Productivity Suite",
   "version": "1.0.0",
   "description": "Enhances coding experience with productivity features and code analysis tools",
-  "permissions": [
-    "activeTab",
-    "storage",
-    "tabs",
-    "clipboardRead",
-    "clipboardWrite"
-  ],
+  "permissions": ["activeTab", "storage", "tabs", "scripting"],
+  "commands": {
+    "trigger-action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Trigger extension action"
+    }
+  },
   "host_permissions": ["http://localhost:8080/*"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [

@@ -3,8 +3,8 @@
 
 // Constants (shared with other extension scripts via constants.js)
 const ACTION_REQUEST_OCR_CAPTURE = "requestOcrCapture";
-const ACTION_EXTRACT_QUESTION = 'extractQuestion';
-const ACTION_EXTRACT_OCR = 'extractOcr';
+const ACTION_EXTRACT_QUESTION = "extractQuestion";
+const ACTION_EXTRACT_OCR = "extractOcr";
 const ACTION_CHECK_SERVER = "checkServer";
 const ACTION_TEST = "test";
 const SERVER_URL = "http://localhost:8080";
@@ -12,6 +12,35 @@ const SERVER_URL = "http://localhost:8080";
 // Debug: Background script loaded
 console.log("🚀 CodingMate Background Script Loaded");
 console.log("🔍 Extension ID:", chrome.runtime.id);
+
+// Listen for keyboard commands
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "trigger-action") {
+    console.log("Keyboard shortcut triggered - starting OCR process");
+
+    // Get the active tab and trigger OCR extraction directly
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      if (!tab?.id) {
+        console.error("No active tab found for OCR");
+        return;
+      }
+
+      console.log("Triggering OCR on tab:", tab.url);
+
+      // Create mock sender object and data for handleOcrCaptureRequest
+      const mockSender = { tab };
+      const ocrData = {
+        url: tab.url,
+        timestamp: new Date().toISOString(),
+      };
+
+      // Call handleOcrCaptureRequest directly
+      handleOcrCaptureRequest(ocrData, mockSender).catch((error) => {
+        console.error("[Shortcut] OCR capture failed:", error);
+      });
+    });
+  }
+});
 
 // Listen for messages from content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
