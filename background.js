@@ -85,20 +85,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === ACTION_EXTRACT_QUESTION) {
-    // Send extracted data to the server
-    sendExtractedData(request.data)
-      .then((response) => {
-        console.log("Data sent to server:", response);
-        sendResponse({
-          success: true,
-          message: "Question sent to CodingMate app",
-        });
-      })
-      .catch((error) => {
-        console.error("Error sending data to server:", error);
-        sendResponse({ success: false, error: error.message });
-      });
-    return true; // Keep the message channel open for async response
+    console.warn(
+      "⚠️ ACTION_EXTRACT_QUESTION is deprecated. Use ACTION_REQUEST_OCR_CAPTURE instead.",
+    );
+    sendResponse({
+      success: false,
+      deprecated: true,
+      error:
+        "extractQuestion is deprecated. Use requestOcrCapture (OCR flow) instead.",
+    });
+    return false;
   }
 
   if (request.action === ACTION_CHECK_SERVER) {

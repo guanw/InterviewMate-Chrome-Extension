@@ -73,10 +73,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         ),
     );
     console.log("📋 Coding check:", {
-      isCoding,
+      isCoding: isSupported,
       url: window.location.href,
     });
-    sendResponse({ isCoding });
+    sendResponse({ isCoding: isSupported });
   }
 
   if (request.action === window.ExtensionConstants.ACTION_TEST) {
